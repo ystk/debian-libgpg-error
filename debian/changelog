@@ -1,3 +1,92 @@
+libgpg-error (1.13-3) unstable; urgency=medium
+
+  * Avoid dumping the native lock-obj header when cross-building, since it
+    will not exist.  I think this resolves the FTCBFS issue.  Thanks to
+    Helmut Grohne for all the useful guidance! (Closes: #753047)
+  * update da.po. Thanks, Joe Hansen! (Closes: #754128)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Thu, 07 Aug 2014 21:32:09 -0400
+
+libgpg-error (1.13-2) unstable; urgency=medium
+
+  * adopt upstream's variant of the hppa tuning.
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Wed, 06 Aug 2014 00:22:25 -0400
+
+libgpg-error (1.13-1) unstable; urgency=medium
+
+  * Adopt by pkg-gnupg team, after conferring with previous maintainer.  Thanks,
+    Jose Carlos Garcia Sogo!
+  * tweak hppa lock-obj struct. (Closes: #757060) Thanks, John David Anglin!
+  * bump standards-version to 3.9.5 (no changes needed)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 05 Aug 2014 09:41:50 -0400
+
+libgpg-error (1.13-0.4) unstable; urgency=medium
+
+  * NMU
+  * include arch-specific lock-obj code as accepted by upstream (another
+    step toward dealing with #753047)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Mon, 04 Aug 2014 17:00:45 -0400
+
+libgpg-error (1.13-0.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Use dh-autoreconf instead of autotools-dev. Closes: #749522.
+ 
+ -- Matthias Klose <doko@debian.org>  Mon, 04 Aug 2014 11:12:08 +0200
+
+libgpg-error (1.13-0.2) unstable; urgency=medium
+
+  * NMU
+  * print arch-specific lock-obj code after successful build (as a step
+    toward dealing with #753047)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Sun, 20 Jul 2014 23:46:49 -0400
+
+libgpg-error (1.13-0.1) unstable; urgency=low
+
+  * NMU
+  * New upstream release (Closes: #752564)
+  * verify upstream signatures (Closes: #752580)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 24 Jun 2014 17:36:15 -0400
+
+libgpg-error (1.12-0.2) unstable; urgency=low
+
+  * NMU
+  * debian/libgpg-error0.install: Renamed to debian/libgpg-error0.install.in.
+    Put libraries under /lib (closes: #720593).
+  * debian/libgpg-error-dev.install: Don't install .so link. We need to
+    handle this via dh_link.
+  * debian/rules: Create .so link and install files between /usr/lib and /lib.
+
+ -- Daniel Leidert <dleidert@debian.org>  Thu, 05 Sep 2013 22:27:50 +0200
+
+libgpg-error (1.12-0.1) unstable; urgency=low
+
+  * NMU
+  * New upstream release (closes: #711995).
+  * debian/clean, debian/*.dirs: Removed unused file.
+  * debian/control: Added generic Vcs-Browser and Vcs-Svn.
+    (Standards-Version): Bumped to 3.9.4.
+    (Build-Depends): Added versioned autotools-dev (closes: #689621).
+  * debian/copyright: Updated.
+  * debian/docs, debian/libgpg-error0.docs: Removed. Installed files via
+    debian/rules.
+  * debian/libgpg-error0.install.in: Renamed to debian/libgpg-error0.install
+    and dropped sed stuff.
+  * debian/libgpg-error0.symbols: Added.
+  * debian/libgpg-error-dev.links.in: Put into debian/rules.
+  * debian/rules: Rewritten for dh 7+. Enabled hardening. Dropped linking.
+  * debian/watch: Minor update.
+  * debian/patches/: Removed patches and dpatch leftovers (closes: #689604).
+  * debian/patches/l10n_update.patch: Dropped (shipped with new release).
+  * debian/patches/series: Emptied.
+
+ -- Daniel Leidert <dleidert@debian.org>  Mon, 12 Aug 2013 22:49:55 +0200
+
 libgpg-error (1.10-3.1) unstable; urgency=low
 
   * Non-maintainer upload.
