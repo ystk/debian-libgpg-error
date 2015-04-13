@@ -84,21 +84,21 @@ bin_PROGRAMS = gpg-error$(EXEEXT)
 @HAVE_W32_SYSTEM_FALSE@	$(am__DEPENDENCIES_1) \
 @HAVE_W32_SYSTEM_FALSE@	$(am__DEPENDENCIES_2) \
 @HAVE_W32_SYSTEM_FALSE@	$(am__DEPENDENCIES_2)
-@CROSS_COMPILING_FALSE@am__append_1 = ./lock-obj-pub.native.h
+@FORCE_USE_SYSCFG_FALSE@am__append_1 = ./lock-obj-pub.native.h
 subdir = src
-DIST_COMMON = README $(include_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/gpg-error-config.in \
-	$(srcdir)/versioninfo.rc.in
+DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/gpg-error-config.in $(srcdir)/versioninfo.rc.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/autobuild.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/threadlib.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/estream.m4 $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lock.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/m4/threadlib.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -138,21 +138,26 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 @HAVE_W32_SYSTEM_TRUE@am__DEPENDENCIES_1 = versioninfo.lo
 am__DEPENDENCIES_2 =
-am__libgpg_error_la_SOURCES_DIST = gpg-error.h gettext.h posix-lock.c \
+am__libgpg_error_la_SOURCES_DIST = gettext.h posix-lock.c \
 	posix-lock-obj.h posix-thread.c w32-gettext.c w32-lock.c \
-	w32-lock-obj.h w32-thread.c init.c init.h version.c lock.h \
-	thread.h strsource.c strerror.c code-to-errno.c \
-	code-from-errno.c
+	w32-lock-obj.h w32-thread.c gpgrt-int.h init.c init.h \
+	version.c lock.h thread.h estream.c estream-printf.c \
+	estream-printf.h strsource.c strerror.c code-to-errno.c \
+	code-from-errno.c visibility.c visibility.h
 @HAVE_W32_SYSTEM_FALSE@am__objects_1 = libgpg_error_la-posix-lock.lo \
 @HAVE_W32_SYSTEM_FALSE@	libgpg_error_la-posix-thread.lo
 @HAVE_W32_SYSTEM_TRUE@am__objects_1 = libgpg_error_la-w32-gettext.lo \
 @HAVE_W32_SYSTEM_TRUE@	libgpg_error_la-w32-lock.lo \
 @HAVE_W32_SYSTEM_TRUE@	libgpg_error_la-w32-thread.lo
 am_libgpg_error_la_OBJECTS = $(am__objects_1) libgpg_error_la-init.lo \
-	libgpg_error_la-version.lo libgpg_error_la-strsource.lo \
+	libgpg_error_la-version.lo libgpg_error_la-estream.lo \
+	libgpg_error_la-estream-printf.lo libgpg_error_la-strsource.lo \
 	libgpg_error_la-strerror.lo libgpg_error_la-code-to-errno.lo \
-	libgpg_error_la-code-from-errno.lo
-libgpg_error_la_OBJECTS = $(am_libgpg_error_la_OBJECTS)
+	libgpg_error_la-code-from-errno.lo \
+	libgpg_error_la-visibility.lo
+nodist_libgpg_error_la_OBJECTS =
+libgpg_error_la_OBJECTS = $(am_libgpg_error_la_OBJECTS) \
+	$(nodist_libgpg_error_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -198,8 +203,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libgpg_error_la_SOURCES) gen-posix-lock-obj.c \
-	gen-w32-lock-obj.c $(gpg_error_SOURCES)
+SOURCES = $(libgpg_error_la_SOURCES) $(nodist_libgpg_error_la_SOURCES) \
+	gen-posix-lock-obj.c gen-w32-lock-obj.c $(gpg_error_SOURCES)
 DIST_SOURCES = $(am__libgpg_error_la_SOURCES_DIST) \
 	gen-posix-lock-obj.c gen-w32-lock-obj.c $(gpg_error_SOURCES)
 am__can_run_installinfo = \
@@ -208,7 +213,7 @@ am__can_run_installinfo = \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
 DATA = $(m4data_DATA)
-HEADERS = $(include_HEADERS)
+HEADERS = $(nodist_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -371,11 +376,34 @@ top_srcdir = @top_srcdir@
 
 # Distributed lock object definitions for cross compilation.
 lock_obj_pub = \
-	syscfg/lock-obj-pub.mingw32.h \
-        syscfg/lock-obj-pub.arm-unknown-linux-androideabi.h
+        syscfg/lock-obj-pub.aarch64-unknown-linux-gnu.h     \
+	syscfg/lock-obj-pub.aarch64-apple-darwin.h          \
+        syscfg/lock-obj-pub.alpha-unknown-linux-gnu.h       \
+        syscfg/lock-obj-pub.arm-unknown-linux-androideabi.h \
+        syscfg/lock-obj-pub.arm-unknown-linux-gnueabi.h     \
+        syscfg/lock-obj-pub.arm-unknown-linux-gnueabihf.h   \
+	syscfg/lock-obj-pub.arm-apple-darwin.h              \
+        syscfg/lock-obj-pub.hppa-unknown-linux-gnu.h        \
+        syscfg/lock-obj-pub.i486-pc-gnu.h                   \
+        syscfg/lock-obj-pub.i486-pc-kfreebsd-gnu.h          \
+        syscfg/lock-obj-pub.i486-pc-linux-gnu.h             \
+        syscfg/lock-obj-pub.m68k-unknown-linux-gnu.h        \
+        syscfg/lock-obj-pub.mips-unknown-linux-gnu.h        \
+        syscfg/lock-obj-pub.mipsel-unknown-linux-gnu.h      \
+        syscfg/lock-obj-pub.powerpc-unknown-linux-gnu.h     \
+        syscfg/lock-obj-pub.powerpc64-unknown-linux-gnu.h   \
+	syscfg/lock-obj-pub.powerpc64le-unknown-linux-gnu.h \
+        syscfg/lock-obj-pub.s390x-ibm-linux-gnu.h           \
+        syscfg/lock-obj-pub.sh4-unknown-linux-gnu.h         \
+        syscfg/lock-obj-pub.sparc-unknown-linux-gnu.h       \
+        syscfg/lock-obj-pub.sparc64-unknown-linux-gnu.h     \
+        syscfg/lock-obj-pub.x86_64-pc-kfreebsd-gnu.h        \
+        syscfg/lock-obj-pub.x86_64-pc-linux-gnu.h           \
+        syscfg/lock-obj-pub.x86_64-pc-linux-gnux32.h        \
+	syscfg/lock-obj-pub.mingw32.h
 
 lib_LTLIBRARIES = libgpg-error.la
-include_HEADERS = gpg-error.h
+nodist_include_HEADERS = gpg-error.h
 bin_SCRIPTS = gpg-error-config
 m4datadir = $(datadir)/aclocal
 m4data_DATA = gpg-error.m4
@@ -384,7 +412,7 @@ EXTRA_DIST = mkstrtable.awk err-sources.h.in err-codes.h.in \
 	mkerrcodes.awk mkerrcodes1.awk mkerrcodes2.awk mkerrcodes.c \
 	mkheader.c gpg-error.h.in mkw32errmap.c w32-add.h w32ce-add.h \
 	err-sources.h err-codes.h gpg-error-config.in gpg-error.m4 \
-	gpg-error.def.in versioninfo.rc.in \
+	gpg-error.vers gpg-error.def.in versioninfo.rc.in \
 	$(lock_obj_pub)
 
 BUILT_SOURCES = err-sources.h err-codes.h code-to-errno.h code-from-errno.h \
@@ -397,7 +425,18 @@ CLEANFILES = err-sources.h err-codes.h code-to-errno.h code-from-errno.h \
 	mkw32errmap.map.c err-sources-sym.h err-codes-sym.h errnos-sym.h \
 	gpg-extra/errno.h mkheader $(tmp_files) lock-obj-pub.native.h
 
+
+#
+# }}} End Windows part
+#
+#
+# {{{ Begin Unix part
+#
 @HAVE_W32_SYSTEM_FALSE@arch_sources = posix-lock.c posix-lock-obj.h posix-thread.c
+
+#
+# {{{ Begin Windows part
+#
 @HAVE_W32_SYSTEM_TRUE@arch_sources = w32-gettext.c w32-lock.c w32-lock-obj.h w32-thread.c
 @HAVE_W32_SYSTEM_TRUE@RCCOMPILE = $(RC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 @HAVE_W32_SYSTEM_TRUE@            -DLOCALEDIR=\"$(localedir)\" $(AM_CPPFLAGS) $(CPPFLAGS)
@@ -413,14 +452,27 @@ CLEANFILES = err-sources.h err-codes.h code-to-errno.h code-from-errno.h \
 @HAVE_W32_SYSTEM_TRUE@libgpg_error_la_DEPENDENCIES = $(gpg_error_res) gpg-error.def
 @HAVE_W32_SYSTEM_FALSE@intllibs = @LTLIBINTL@
 @HAVE_W32_SYSTEM_TRUE@intllibs = 
-libgpg_error_la_LDFLAGS = -version-info \
-  @LIBGPG_ERROR_LT_CURRENT@:@LIBGPG_ERROR_LT_REVISION@:@LIBGPG_ERROR_LT_AGE@ \
-  $(no_undefined) $(export_symbols)
+@HAVE_LD_VERSION_SCRIPT_FALSE@libgpg_error_vers_opt = 
 
-libgpg_error_la_SOURCES = gpg-error.h gettext.h $(arch_sources) \
-	init.c init.h version.c lock.h thread.h \
-	strsource.c strerror.c code-to-errno.c code-from-errno.c
+#
+# }}} End Unix part
+#
+@HAVE_LD_VERSION_SCRIPT_TRUE@libgpg_error_vers_opt = -Wl,--version-script=$(srcdir)/gpg-error.vers
+libgpg_error_la_LDFLAGS = \
+  $(no_undefined) $(export_symbols) $(libgpg_error_vers_opt) \
+  -version-info \
+  @LIBGPG_ERROR_LT_CURRENT@:@LIBGPG_ERROR_LT_REVISION@:@LIBGPG_ERROR_LT_AGE@
 
+libgpg_error_la_SOURCES = gettext.h $(arch_sources) \
+	gpgrt-int.h init.c init.h version.c lock.h thread.h \
+	estream.c estream-printf.c estream-printf.h \
+	strsource.c strerror.c code-to-errno.c code-from-errno.c \
+	visibility.c visibility.h
+
+nodist_libgpg_error_la_SOURCES = gpg-error.h
+
+# libgpg_error_la_DEPENDENCIES = \
+#        $(srcdir)/gpg-error.vers
 
 # Note that RCCOMPILE needs the same defines as ..._la_CPPFLAGS but
 # without the extra_cppflags because they may include am -idirafter
@@ -433,11 +485,11 @@ gpg_error_LDADD = ./libgpg-error.la @LTLIBINTL@
 parts_of_gpg_error_h = gpg-error.h.in err-sources.h.in err-codes.h.in \
 	errnos.in w32-add.h w32ce-add.h $(lock_obj_pub) \
 	$(am__append_1)
-@CROSS_COMPILING_FALSE@pre_mkheader_cmds = :
+@FORCE_USE_SYSCFG_FALSE@pre_mkheader_cmds = :
 
-# If we are cross-compiling we better make sure that no stale native
-# lock include file will be found by mkheader.
-@CROSS_COMPILING_TRUE@pre_mkheader_cmds = -rm lock-obj-pub.native.h 2>/dev/null
+# If we are cross-compiling or building on Windows we better make sure
+# that no stale native lock include file will be found by mkheader.
+@FORCE_USE_SYSCFG_TRUE@pre_mkheader_cmds = -rm lock-obj-pub.native.h 2>/dev/null
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -624,12 +676,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gpg_error-strsource-sym.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-code-from-errno.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-code-to-errno.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-estream-printf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-estream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-init.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-posix-lock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-posix-thread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-strerror.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-strsource.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-version.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-visibility.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-w32-gettext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-w32-lock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgpg_error_la-w32-thread.Plo@am__quote@
@@ -704,6 +759,20 @@ libgpg_error_la-version.lo: version.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libgpg_error_la-version.lo `test -f 'version.c' || echo '$(srcdir)/'`version.c
 
+libgpg_error_la-estream.lo: estream.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libgpg_error_la-estream.lo -MD -MP -MF $(DEPDIR)/libgpg_error_la-estream.Tpo -c -o libgpg_error_la-estream.lo `test -f 'estream.c' || echo '$(srcdir)/'`estream.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgpg_error_la-estream.Tpo $(DEPDIR)/libgpg_error_la-estream.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='estream.c' object='libgpg_error_la-estream.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libgpg_error_la-estream.lo `test -f 'estream.c' || echo '$(srcdir)/'`estream.c
+
+libgpg_error_la-estream-printf.lo: estream-printf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libgpg_error_la-estream-printf.lo -MD -MP -MF $(DEPDIR)/libgpg_error_la-estream-printf.Tpo -c -o libgpg_error_la-estream-printf.lo `test -f 'estream-printf.c' || echo '$(srcdir)/'`estream-printf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgpg_error_la-estream-printf.Tpo $(DEPDIR)/libgpg_error_la-estream-printf.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='estream-printf.c' object='libgpg_error_la-estream-printf.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libgpg_error_la-estream-printf.lo `test -f 'estream-printf.c' || echo '$(srcdir)/'`estream-printf.c
+
 libgpg_error_la-strsource.lo: strsource.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libgpg_error_la-strsource.lo -MD -MP -MF $(DEPDIR)/libgpg_error_la-strsource.Tpo -c -o libgpg_error_la-strsource.lo `test -f 'strsource.c' || echo '$(srcdir)/'`strsource.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgpg_error_la-strsource.Tpo $(DEPDIR)/libgpg_error_la-strsource.Plo
@@ -731,6 +800,13 @@ libgpg_error_la-code-from-errno.lo: code-from-errno.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='code-from-errno.c' object='libgpg_error_la-code-from-errno.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libgpg_error_la-code-from-errno.lo `test -f 'code-from-errno.c' || echo '$(srcdir)/'`code-from-errno.c
+
+libgpg_error_la-visibility.lo: visibility.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libgpg_error_la-visibility.lo -MD -MP -MF $(DEPDIR)/libgpg_error_la-visibility.Tpo -c -o libgpg_error_la-visibility.lo `test -f 'visibility.c' || echo '$(srcdir)/'`visibility.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgpg_error_la-visibility.Tpo $(DEPDIR)/libgpg_error_la-visibility.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='visibility.c' object='libgpg_error_la-visibility.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgpg_error_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libgpg_error_la-visibility.lo `test -f 'visibility.c' || echo '$(srcdir)/'`visibility.c
 
 gpg_error-strsource-sym.o: strsource-sym.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gpg_error_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gpg_error-strsource-sym.o -MD -MP -MF $(DEPDIR)/gpg_error-strsource-sym.Tpo -c -o gpg_error-strsource-sym.o `test -f 'strsource-sym.c' || echo '$(srcdir)/'`strsource-sym.c
@@ -800,9 +876,9 @@ uninstall-m4dataDATA:
 	@list='$(m4data_DATA)'; test -n "$(m4datadir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(m4datadir)'; $(am__uninstall_files_from_dir)
-install-includeHEADERS: $(include_HEADERS)
+install-nodist_includeHEADERS: $(nodist_include_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nodist_include_HEADERS)'; test -n "$(includedir)" || list=; \
 	if test -n "$$list"; then \
 	  echo " $(MKDIR_P) '$(DESTDIR)$(includedir)'"; \
 	  $(MKDIR_P) "$(DESTDIR)$(includedir)" || exit 1; \
@@ -816,9 +892,9 @@ install-includeHEADERS: $(include_HEADERS)
 	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
 	done
 
-uninstall-includeHEADERS:
+uninstall-nodist_includeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
+	@list='$(nodist_include_HEADERS)'; test -n "$(includedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(includedir)'; $(am__uninstall_files_from_dir)
 
@@ -971,8 +1047,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-data-local install-includeHEADERS \
-	install-m4dataDATA
+install-data-am: install-data-local install-m4dataDATA \
+	install-nodist_includeHEADERS
 
 install-dvi: install-dvi-am
 
@@ -1020,8 +1096,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
-	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
-	uninstall-m4dataDATA
+	uninstall-libLTLIBRARIES uninstall-m4dataDATA \
+	uninstall-nodist_includeHEADERS
 
 .MAKE: all check install install-am install-strip
 
@@ -1033,16 +1109,16 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	install-binPROGRAMS install-binSCRIPTS install-data \
 	install-data-am install-data-local install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
-	install-includeHEADERS install-info install-info-am \
-	install-libLTLIBRARIES install-m4dataDATA install-man \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-m4dataDATA install-man install-nodist_includeHEADERS \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
 	pdf pdf-am ps ps-am tags uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-binSCRIPTS \
-	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
-	uninstall-m4dataDATA
+	uninstall-libLTLIBRARIES uninstall-m4dataDATA \
+	uninstall-nodist_includeHEADERS
 
 
 @HAVE_W32_SYSTEM_TRUE@.rc.lo:
@@ -1129,15 +1205,16 @@ errnos-sym.h: Makefile mkstrtable.awk errnos.in
 mkheader: mkheader.c Makefile
 	$(CC_FOR_BUILD) -g -O0 -I. -I$(srcdir) -o $@ $(srcdir)/mkheader.c
 
-@CROSS_COMPILING_FALSE@lock-obj-pub.native.h: Makefile gen-posix-lock-obj posix-lock-obj.h
-@CROSS_COMPILING_FALSE@	./gen-posix-lock-obj >$@
+@FORCE_USE_SYSCFG_FALSE@./lock-obj-pub.native.h: Makefile gen-posix-lock-obj posix-lock-obj.h
+@FORCE_USE_SYSCFG_FALSE@	./gen-posix-lock-obj >$@
 
 # We also depend on versioninfo.rc because that is build by
 # config.status and thus has up-to-date version numbers.
-gpg-error.h: Makefile mkheader $(parts_of_gpg_error_h) versioninfo.rc
+gpg-error.h: Makefile mkheader $(parts_of_gpg_error_h) \
+             versioninfo.rc ../config.h
 	$(pre_mkheader_cmds)
 	./mkheader $(host_os) $(host_triplet)  $(srcdir)/gpg-error.h.in \
-                   $(PACKAGE_VERSION) $(VERSION_NUMBER) >$@
+                   ../config.h $(PACKAGE_VERSION) $(VERSION_NUMBER) >$@
 
 install-data-local:
 @HAVE_W32CE_SYSTEM_TRUE@	-$(MKDIR_P) "$(DESTDIR)$(includedir)/gpg-extra"
