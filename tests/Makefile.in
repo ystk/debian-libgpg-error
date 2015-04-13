@@ -72,21 +72,22 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 TESTS = t-version$(EXEEXT) t-strerror$(EXEEXT) t-syserror$(EXEEXT) \
-	t-lock$(EXEEXT)
+	t-lock$(EXEEXT) t-printf$(EXEEXT)
 noinst_PROGRAMS = $(am__EXEEXT_1)
 subdir = tests
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/autobuild.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/lock.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/threadlib.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/estream.m4 $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/lock.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/m4/threadlib.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -94,7 +95,7 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__EXEEXT_1 = t-version$(EXEEXT) t-strerror$(EXEEXT) \
-	t-syserror$(EXEEXT) t-lock$(EXEEXT)
+	t-syserror$(EXEEXT) t-lock$(EXEEXT) t-printf$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 t_lock_SOURCES = t-lock.c
 t_lock_OBJECTS = t-lock.$(OBJEXT)
@@ -103,6 +104,10 @@ t_lock_DEPENDENCIES = $(gpg_error_lib) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
+t_printf_SOURCES = t-printf.c
+t_printf_OBJECTS = t-printf.$(OBJEXT)
+t_printf_LDADD = $(LDADD)
+t_printf_DEPENDENCIES = $(gpg_error_lib)
 t_strerror_SOURCES = t-strerror.c
 t_strerror_OBJECTS = t-strerror.$(OBJEXT)
 t_strerror_LDADD = $(LDADD)
@@ -141,8 +146,9 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = t-lock.c t-strerror.c t-syserror.c t-version.c
-DIST_SOURCES = t-lock.c t-strerror.c t-syserror.c t-version.c
+SOURCES = t-lock.c t-printf.c t-strerror.c t-syserror.c t-version.c
+DIST_SOURCES = t-lock.c t-printf.c t-strerror.c t-syserror.c \
+	t-version.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -310,6 +316,7 @@ top_srcdir = @top_srcdir@
 @HAVE_W32CE_SYSTEM_TRUE@extra_includes = -idirafter $(top_builddir)/src/gpg-extra
 gpg_error_lib = ../src/libgpg-error.la
 INCLUDES = -I$(top_builddir)/src $(extra_includes)
+AM_LDFLAGS = -no-install
 LDADD = $(gpg_error_lib)
 noinst_HEADERS = t-common.h
 t_lock_LDADD = $(gpg_error_lib) $(LIBMULTITHREAD)
@@ -359,6 +366,9 @@ clean-noinstPROGRAMS:
 t-lock$(EXEEXT): $(t_lock_OBJECTS) $(t_lock_DEPENDENCIES) $(EXTRA_t_lock_DEPENDENCIES) 
 	@rm -f t-lock$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(t_lock_OBJECTS) $(t_lock_LDADD) $(LIBS)
+t-printf$(EXEEXT): $(t_printf_OBJECTS) $(t_printf_DEPENDENCIES) $(EXTRA_t_printf_DEPENDENCIES) 
+	@rm -f t-printf$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(t_printf_OBJECTS) $(t_printf_LDADD) $(LIBS)
 t-strerror$(EXEEXT): $(t_strerror_OBJECTS) $(t_strerror_DEPENDENCIES) $(EXTRA_t_strerror_DEPENDENCIES) 
 	@rm -f t-strerror$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(t_strerror_OBJECTS) $(t_strerror_LDADD) $(LIBS)
@@ -376,6 +386,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t-lock.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t-printf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t-strerror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t-syserror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t-version.Po@am__quote@

@@ -1,3 +1,81 @@
+libgpg-error (1.17-3) unstable; urgency=medium
+
+  [ David Prévot ]
+  * Force rebuild of gmo files
+  * Update Polish translation, thanks to Jakub Bogusz
+  * Update French translation
+  * Update Ukrainian translation, thanks to Yuri Chornoivan
+  * Update Danish translation, thanks to Joe Hansen
+  * Update Dutch translation, thanks to Freek de Kruijf
+  * Update Japanese translation, thanks to NIIBE Yutaka
+  * Add Russian translation, thanks to Ineiev
+  * Update Italian translation, thanks to Milo Casagrande
+  * Add Chinese (traditional) translation, thanks to Jedi Lin
+  * Add Portuguese translation, thanks to Paulo Tomé (Closes: #770893)
+  * Add Serbian translation, thanks to Мирослав Николић
+  * Update Czech translation, thanks to Petr Pisar
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Fri, 12 Dec 2014 15:55:18 -0500
+
+libgpg-error (1.17-2) unstable; urgency=medium
+
+  * added arch-specific lock-obj header for added
+    mips64el-unknown-linux-gnuabi64 (Closes: #766135)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Fri, 24 Oct 2014 15:24:00 -0400
+
+libgpg-error (1.17-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #762322)
+    - debian/patches: all merged upstream
+  * added arch-specific lock-obj header for i586-pc-linux-gnu
+    (Closes: #764881)
+  * bumped all symbols to 1.14 since version node GPG_ERROR_1.0 was
+    introduced there. (Closes: #765430)
+  * use upstream's manpage for gpg-error-config
+  * bump Standards-Version to 3.9.6 (no changes needed)
+ 
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Mon, 29 Sep 2014 11:39:00 -0400
+
+libgpg-error (1.16-2) unstable; urgency=medium
+
+  * added headers for powerpc64el and sparc64 (Closes: #762322)
+  * fix build timestamp for reproducibility (Closes: #762397)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Mon, 22 Sep 2014 15:52:35 -0400
+
+libgpg-error (1.16-1) unstable; urgency=medium
+
+  * New upstream release
+   - drop patches, applied upstream
+  * move /usr/include/gpg-error.h to /usr/include/$ARCH/gpg-error.h
+    (addresses part of #643341)
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Thu, 18 Sep 2014 10:53:54 -0400
+
+libgpg-error (1.15-1) unstable; urgency=medium
+
+  * New upstream release (skipping 1.14)
+  * move to debhelper 9
+  * complete move from dh_autotools-dev to dh_autoreconf
+  * drop all debian/patches -- applied upstream
+  * update the text of gpg-error-config.1, since it has not been called
+    libgpg-error-config for years
+  * update gpg-error-config to mention --mt
+  * debian/copyright: use DEP5 
+  * adopt new symbol visibility (GPG_ERROR_1.0) from upstream
+  * fix locking problem at close with patch from upstream
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 09 Sep 2014 14:36:55 -0400
+
+libgpg-error (1.13-4) unstable; urgency=medium
+
+  * moving to git
+  * using pristine-tar
+  * wrap-and-sort to clean up debian/*
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Thu, 28 Aug 2014 14:00:12 -0700
+
 libgpg-error (1.13-3) unstable; urgency=medium
 
   * Avoid dumping the native lock-obj header when cross-building, since it
